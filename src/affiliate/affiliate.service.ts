@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateAffiliateDto } from './dto/createAffiliate.dto';
 import { Affiliate } from './affiliate.interface';
 import { ClientProxy } from '@nestjs/microservices';
@@ -16,7 +16,14 @@ export class AffiliateService {
     return this.affiliates;
   }
 
-  create(body: CreateAffiliateDto): Affiliate {
+  async create(body: CreateAffiliateDto): Promise<Affiliate> {
+    const pattern = { queryBy: 'id' };
+    const isValidUser = await this.client.send<number>(pattern, body.userId)
+      .toPromise();
+
+    if (!isValidUser) {
+      throw new HttpException('User is not valid', HttpStatus.NOT_ACCEPTABLE);
+    }
     const affiliate = new Affiliate(body);
     affiliate.id = this.affiliates.length + 1;
     this.affiliates.push(affiliate);

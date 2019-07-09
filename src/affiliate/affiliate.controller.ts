@@ -20,14 +20,6 @@ export class AffiliateController {
 
   @Post()
   async createAffiliate(@Body() dto: CreateAffiliateDto): Promise<any> {
-    const pattern = { queryBy: 'id' };
-    const isValid = await this.client.send<number>(pattern, dto.userId)
-      .toPromise();
-
-    if (!isValid) {
-      throw new HttpException('Deu ruimzao', HttpStatus.NOT_ACCEPTABLE);
-    }
-
     return this.affiliateService.create(dto);
   }
 
