@@ -1,5 +1,7 @@
+import { User } from '../../user/models/user.interface';
+import { ApiModelProperty } from '@nestjs/swagger';
+
 export class CreateAffiliateDto {
-  readonly name: string;
-  readonly userId: number;
-  readonly storeIds: number[];
+  @ApiModelProperty()
+  readonly user: Partial<User>;
 }

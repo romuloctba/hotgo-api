@@ -1,10 +1,11 @@
-export class Affiliate {
-  id: number;
-  userId: number;
-  storeIds: [number];
+import { User } from '../user/models/user.interface';
 
-  constructor({ userId, storeIds }) {
-    this.userId = userId;
-    this.storeIds = storeIds;
-  }
+export interface Affiliate {
+  id: string;
+  user: Partial<User>;
+  storeIds: [number];
+  status: string;
+  createdAt: Date;
+  modifiedAt: Date;
+  revision: number;
 }

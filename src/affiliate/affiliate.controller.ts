@@ -1,9 +1,13 @@
-import { Controller, Get, Param, Post, Body, Inject, HttpException, HttpStatus } from '@nestjs/common';
-import { Affiliate } from './affiliate.interface';
+import { Controller, Get, Param, Post, Body, Inject, HttpException, HttpStatus, UsePipes } from '@nestjs/common';
+import { AffiliateEntity } from './affiliate.entity';
 import { AffiliateService } from './affiliate.service';
 import { CreateAffiliateDto } from './dto/createAffiliate.dto';
 import { ClientProxy } from '@nestjs/microservices';
-import { throwError } from 'rxjs';
+import { AffiliatePipe } from './affiliate.pipe';
+import { ObjectID } from 'typeorm';
+import { ApiUseTags } from '@nestjs/swagger';
+
+@ApiUseTags('affiliate')
 
 @Controller('affiliate')
 export class AffiliateController {
@@ -14,17 +18,21 @@ export class AffiliateController {
   ) {}
 
   @Get()
-  getAffiliates(): Affiliate[] {
+  getAffiliates(): Promise<AffiliateEntity[]> {
     return this.affiliateService.findAll();
   }
 
+  @UsePipes(AffiliatePipe)
   @Post()
-  async createAffiliate(@Body() dto: CreateAffiliateDto): Promise<any> {
-    return this.affiliateService.create(dto);
+  async createAffiliate(@Body() dto: CreateAffiliateDto): Promise<AffiliateEntity> {
+    return this.affiliateService.create(dto)
+      .catch(e => {
+        throw new HttpException(e, HttpStatus.NOT_ACCEPTABLE);
+      });
   }
 
   @Get(':id')
-  getAffiliate(@Param('id') id: number): Affiliate {
+  async getAffiliate(@Param('id') id: string): Promise<AffiliateEntity> {
     return this.affiliateService.read(id);
   }
 
