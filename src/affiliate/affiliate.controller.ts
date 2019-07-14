@@ -1,11 +1,22 @@
-import { Controller, Get, Param, Post, Body, Inject, HttpException, HttpStatus, UsePipes } from '@nestjs/common';
+import { Controller,
+  Get,
+  Param,
+  Post,
+  HttpException,
+  HttpStatus,
+  UsePipes,
+  UnauthorizedException,
+  UseGuards,
+  Request
+} from '@nestjs/common';
 import { AffiliateEntity } from './affiliate.entity';
 import { AffiliateService } from './affiliate.service';
-import { CreateAffiliateDto } from './dto/createAffiliate.dto';
+import { CreateAffiliateDto } from './models/createAffiliate.dto';
 import { ClientProxy } from '@nestjs/microservices';
 import { AffiliatePipe } from './affiliate.pipe';
 import { ObjectID } from 'typeorm';
 import { ApiUseTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiUseTags('affiliate')
 
@@ -14,7 +25,6 @@ export class AffiliateController {
 
   constructor(
     private readonly affiliateService: AffiliateService,
-    @Inject('USER_SERVICE') private readonly client: ClientProxy,
   ) {}
 
   @Get()
@@ -22,15 +32,19 @@ export class AffiliateController {
     return this.affiliateService.findAll();
   }
 
-  @UsePipes(AffiliatePipe)
   @Post()
-  async createAffiliate(@Body() dto: CreateAffiliateDto): Promise<AffiliateEntity> {
-    return this.affiliateService.create(dto)
-      .catch(e => {
+  @UsePipes(AffiliatePipe)
+  @UseGuards(AuthGuard('jwt'))
+  async createAffiliate(@Request() req): Promise<AffiliateEntity> {
+    try {
+      return this.affiliateService.create(req.user.id);
+    } catch(e) {
+        console.log('vish maninho deu erro');
         throw new HttpException(e, HttpStatus.NOT_ACCEPTABLE);
       });
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Get(':id')
   async getAffiliate(@Param('id') id: string): Promise<AffiliateEntity> {
     return this.affiliateService.read(id);

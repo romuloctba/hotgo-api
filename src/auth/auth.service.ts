@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import * as crypto from 'crypto';
@@ -14,20 +14,28 @@ export class AuthService {
     const encriptedPpass = await crypto
     .createHmac('sha256', plainPass)
     .digest('hex');
-    console.log(' validate user -- ', username, plainPass, encriptedPpass);
     const user = await this.usersService.findOne({email: username, password: encriptedPpass });
-    console.log(' validate user found pass ', user);
     if (user && user.password === encriptedPpass) {
-      const { password, ...result } = user;
+      const { ...result } = user;
       return result;
     }
     return null;
   }
 
-  async login(user: any) {
+  async login(loginDetails: any) {
+    console.log('login to ', loginDetails);
     // TODO: add relevant stuff to payload
-    console.log('login User ', user);
-    const payload = { username: user.username, sub: user.userId };
+    const encriptedPassword = await crypto
+      .createHmac('sha256', loginDetails.password)
+      .digest('hex');
+
+    const user = await this.usersService.findOne({ email: loginDetails.username, password: encriptedPassword });
+
+    console.log('login to ', user);
+    if(!user) {
+      throw new UnauthorizedException();
+    }
+    const payload = { username: user.email, sub: user.id };
     return {
       access_token: this.jwtService.sign(payload),
     };

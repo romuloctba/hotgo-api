@@ -12,13 +12,13 @@ export class AffiliatePipe implements PipeTransform {
   constructor(private readonly affiliateService: AffiliateService) {}
   async transform(value: any, metadata: ArgumentMetadata) {
 
-    if (!value.name) {
-      throw new BadRequestException(ERROR_MESSAGES.MISSING_NAME);
-    }
-
-    if (!value.user || !value.user.id) {
-      throw new BadRequestException(ERROR_MESSAGES.MISSING_USER_ID);
-    }
+    // if (!value.name) {
+    //   throw new BadRequestException(ERROR_MESSAGES.MISSING_NAME);
+    // }
+    console.log('value is ', value);
+    // if (!value.user || !value.user.id) {
+    //   throw new BadRequestException(ERROR_MESSAGES.MISSING_USER_ID);
+    // }
 
     const isValidUser = true; // await this.affiliateService.getUserById(value.user.id);
     if (!isValidUser) {

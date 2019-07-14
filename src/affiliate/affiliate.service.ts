@@ -1,8 +1,26 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Response, Body, UnauthorizedException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { AffiliateEntity } from './affiliate.entity';
+import { Repository } from 'typeorm';
+import { CreateAffiliateDto } from './models/createAffiliate.dto';
+import { Affiliate } from './affiliate.interface';
 
 @Injectable()
 export class AffiliateService {
+  constructor(
+    @InjectRepository(AffiliateEntity) private readonly affiliateRepository: Repository<AffiliateEntity>,
+  ) {}
 
-  constructor() {}
+  async findAll() {
+    return this.affiliateRepository.find();
+  }
 
+  async create(userId: string) {
+    const newAffiliate = Object.assign(new AffiliateEntity(userId));
+    return this.affiliateRepository.save(newAffiliate);
+  }
+
+  async read(id: string) {
+    return this.affiliateRepository.findOne(id);
+  }
 }

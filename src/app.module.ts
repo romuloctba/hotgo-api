@@ -15,7 +15,7 @@ import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
-    // AffiliateModule,
+    AffiliateModule,
     UserModule,
     GatewaysModule,
     TypeOrmModule.forRoot({

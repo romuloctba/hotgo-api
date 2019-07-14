@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Body, UsePipes, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, UsePipes, UseGuards, Req } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { CreateUserDto } from './models/createUserDto';
 import { UserService } from './user.service';
@@ -26,9 +26,16 @@ export class UserController {
   }
 
   @Get(':id')
-  @MessagePattern({ queryBy: 'id' })
-  findById(@Param('id') id: string) {
-    return this.userService.findById(id);
+  //@UseGuards(AuthGuard('jwt'))
+  findById(@Param('id') id: string, @Req() req) {
+    if (id === 'me') {
+      id = req.user.id;
+    }
+    return this.userService.findById(id)
+    .catch(e => {
+      console.error(e);
+      throw e
+    });
   }
 
   @Post(':id/affiliate')

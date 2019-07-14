@@ -3,5 +3,5 @@ import { ApiModelProperty } from '@nestjs/swagger';
 
 export class CreateAffiliateDto {
   @ApiModelProperty()
-  readonly user: Partial<User>;
+  user: Partial<User>;
 }

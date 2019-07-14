@@ -34,17 +34,15 @@ export class UserService {
     });
   }
 
-  find(query: any) {
+  async find(query: any) {
     return this.userRepository.find(query);
   }
 
-  findById(id: string) {
-      return this.userRepository
-      .findOneOrFail({id}, { select: ['password'] })
-      .catch(e => e);
+  async findById(id) {
+    return await this.userRepository.findOne(id);
   }
 
-  findOne(query: any) {
+  async findOne(query: any) {
     return this.userRepository.findOne(query);
   }
   createAffiliateByUser(user) {

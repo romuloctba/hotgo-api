@@ -14,11 +14,11 @@ import { UserModule } from '../user/user.module';
     UserModule,
   ],
   controllers: [
-    // AffiliateController
+    AffiliateController,
   ],
   providers: [
     AffiliateService,
     AffiliatePipe,
-  ]
+  ],
 })
 export class AffiliateModule {}
