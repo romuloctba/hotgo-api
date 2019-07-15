@@ -17,7 +17,11 @@ export class AffiliateService {
 
   async create(userId: string) {
     const newAffiliate = Object.assign(new AffiliateEntity(userId));
-    return this.affiliateRepository.save(newAffiliate);
+    return this.affiliateRepository.save(newAffiliate)
+    .catch(e => {
+      console.log('catch e ', e);
+      return e;
+    });
   }
 
   async read(id: string) {

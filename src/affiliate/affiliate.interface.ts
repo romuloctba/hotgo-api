@@ -1,8 +1,9 @@
 import { User } from '../user/models/user.interface';
+import { UserEntity } from '../user/models/user.entity';
 
 export interface Affiliate {
   id: string;
-  user: Partial<User>;
+  userId: string,
   storeIds: [number];
   status: string;
   createdAt: Date;

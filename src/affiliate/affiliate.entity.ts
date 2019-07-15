@@ -8,6 +8,8 @@ import {
   UpdateDateColumn,
   VersionColumn,
   PrimaryGeneratedColumn,
+  RelationId,
+  JoinColumn,
 } from 'typeorm';
 import { User } from '../user/models/user.interface';
 import { Affiliate } from './affiliate.interface';
@@ -24,16 +26,15 @@ declare enum STATUS_ENUM {
 export class AffiliateEntity implements Affiliate {
 
   constructor(userId: string) {
-    this.user = { id: userId };
+    this.userId = userId;
   }
 
   @PrimaryGeneratedColumn()
   @ObjectIdColumn()
   id: string;
 
-  @OneToOne(type => UserEntity, user => user.id)
   @Column({ unique: true })
-  user: Partial<User>;
+  userId: string;
 
   @Column({ nullable: true })
   storeIds: [number];

@@ -10,4 +10,6 @@ export class CustomerEntity implements Customer {
 
   @Column()
   user: Partial<User>;
+  @Column()
+  userId: string;
 }

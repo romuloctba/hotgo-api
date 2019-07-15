@@ -23,5 +23,8 @@ export class ProductEntity implements Product {
   tags: string[];
 
   @Column()
+  supplierId: string;
+
+  @Column()
   supplier: Supplier;
 }

@@ -35,18 +35,13 @@ export class AffiliateController {
   @Post()
   @UsePipes(AffiliatePipe)
   @UseGuards(AuthGuard('jwt'))
-  async createAffiliate(@Request() req): Promise<AffiliateEntity> {
-    try {
-      return this.affiliateService.create(req.user.id);
-    } catch(e) {
-        console.log('vish maninho deu erro');
-        throw new HttpException(e, HttpStatus.NOT_ACCEPTABLE);
-      });
+  async createAffiliate(@Request() req) {
+    return this.affiliateService.create(req.user.id);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Get(':id')
-  async getAffiliate(@Param('id') id: string): Promise<AffiliateEntity> {
+  async getAffiliate(@Param('id') id: string) {
     return this.affiliateService.read(id);
   }
 

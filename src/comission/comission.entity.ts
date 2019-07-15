@@ -12,6 +12,10 @@ export class ComissionEntity implements Comission {
   @Column()
   amount: Referral;
   @Column()
+  affiliateId: string;
+  @Column()
+  supplierId: string;
+  @Column()
   affiliate: Partial<Affiliate>;
   @Column()
   supplier: Partial<Supplier>;

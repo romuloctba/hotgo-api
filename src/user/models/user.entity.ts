@@ -10,10 +10,13 @@ import {
   BeforeInsert,
   PrimaryGeneratedColumn,
   BeforeUpdate,
+  OneToOne,
+  RelationId,
 } from 'typeorm';
 import { ApiModelProperty } from '@nestjs/swagger';
 import { User } from './user.interface';
 import { USER_STATUS } from '../user.constants';
+import { AffiliateEntity } from '../../affiliate/affiliate.entity';
 
 declare enum STATUS_ENUM {
   ACTIVE,

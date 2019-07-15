@@ -6,6 +6,8 @@ export interface Comission {
   id: string;
   amount: Referral;
   affiliate: Partial<Affiliate>;
+  affiliateId: string;
   supplier: Partial<Supplier>;
+  supplierId: string;
   status: number;
 }

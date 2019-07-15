@@ -12,7 +12,10 @@ export class StoreEntity implements Store {
   name: string;
   @Column()
   supplier: Partial<User>;
-
+  @Column()
+  supplierId: string;
+  @Column()
+  themeId: string;
   @Column()
   theme: Partial<Theme>;
 }

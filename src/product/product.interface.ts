@@ -5,5 +5,6 @@ export interface Product {
   name: string;
   categories: string[];
   tags: string[];
+  supplierId: string;
   supplier: Supplier;
 }

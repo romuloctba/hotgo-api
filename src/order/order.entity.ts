@@ -12,7 +12,13 @@ export class OrderEntity implements Order {
   @Column()
   products: [Partial<Product>];
   @Column()
+  productIds: [string];
+  @Column()
   customer: Partial<Customer>;
+  @Column()
+  customerId: string;
+  @Column()
+  supplierId: string;
   @Column()
   supplier: Partial<Supplier>;
 }
