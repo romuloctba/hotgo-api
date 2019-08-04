@@ -13,6 +13,7 @@ export class AppController {
   @UseGuards(AuthGuard('local'))
   @Post('login')
   async login(@Body() body) {
+    console.error('login method is ', body);
     return this.authService.login(body);
   }
 }

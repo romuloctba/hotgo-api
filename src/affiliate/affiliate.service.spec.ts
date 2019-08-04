@@ -5,11 +5,8 @@ describe('AffiliateService', () => {
   let service: AffiliateService;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [AffiliateService],
-    }).compile();
-
-    service = module.get<AffiliateService>(AffiliateService);
+    const affiliateRepositoryMock = {} as any;
+    service = new AffiliateService(affiliateRepositoryMock);
   });
 
   it('should be defined', () => {

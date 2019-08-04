@@ -12,8 +12,7 @@ export class AdminGateway {
   ) {}
   @SubscribeMessage('message')
   handleMessage(client: any, payload: any) {
-    console.log(' msg', payload);
-    return { event: 'mesaasage', result: 'Hello wdsdforld!' };
+    return 'success';
   }
 
   @SubscribeMessage('createUserFromAdmin')

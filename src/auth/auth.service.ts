@@ -23,19 +23,15 @@ export class AuthService {
   }
 
   async login(loginDetails: any) {
-    console.log('login to ', loginDetails);
     // TODO: add relevant stuff to payload
-    const encriptedPassword = await crypto
-      .createHmac('sha256', loginDetails.password)
-      .digest('hex');
+    const user = await this.validateUser(loginDetails.username, loginDetails.password);
 
-    const user = await this.usersService.findOne({ email: loginDetails.username, password: encriptedPassword });
-
-    console.log('login to ', user);
-    if(!user) {
+    if (!user) {
       throw new UnauthorizedException();
     }
+
     const payload = { username: user.email, sub: user.id };
+
     return {
       access_token: this.jwtService.sign(payload),
     };

@@ -3,6 +3,9 @@ import { Entity, PrimaryGeneratedColumn, ObjectIdColumn, Column } from 'typeorm'
 
 @Entity()
 export class SupplierEntity implements Supplier {
+  constructor(userId: string) {
+    this.userId = userId;
+  }
   @PrimaryGeneratedColumn()
   @ObjectIdColumn()
   id: string;

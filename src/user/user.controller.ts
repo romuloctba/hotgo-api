@@ -34,7 +34,7 @@ export class UserController {
     return this.userService.findById(id)
     .catch(e => {
       console.error(e);
-      throw e
+      throw e;
     });
   }
 

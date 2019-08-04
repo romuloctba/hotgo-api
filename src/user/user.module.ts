@@ -7,6 +7,7 @@ import { UserService } from './user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './models/user.entity';
 import { UserPipe } from './user.pipe';
+import { UserResolver } from './user.resolver';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { UserPipe } from './user.pipe';
   providers: [UserService,
     //  UserPipe,
      UserEntity,
+    UserResolver,
     ],
   exports: [UserService],
 })
