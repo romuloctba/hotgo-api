@@ -3,8 +3,32 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+input CreateCustomerDto {
+  userId: String!
+}
+
+input CreateStoreDto {
+  supplierId: String!
+  name: String!
+  themeId: String!
+}
+
+input CreateSupplierDto {
+  userId: String!
+}
+
+input CreateUserDto {
+  email: String!
+  password: String!
+  phone: String!
+  firstName: String!
+  lastName: String!
+}
+
 type CustomerEntity {
-  userId: UserEntity!
+  id: ID!
+  userId: String!
+  user: UserEntity!
 }
 
 """
@@ -13,15 +37,39 @@ The javascript `Date` as string. Type represents date and time as the ISO Date s
 scalar DateTime
 
 type Mutation {
-  createUser(lastName: String!, firstName: String!, phone: String!, password: String!, email: String!, name: String!): UserEntity!
+  createUser(user: CreateUserDto!): UserEntity!
+  createStore(store: CreateStoreDto!): StoreEntity!
+  createSupplier(supplier: CreateSupplierDto!): SupplierEntity!
+  createCustomer(customer: CreateCustomerDto!): CustomerEntity!
 }
 
 type Query {
   user(id: String!): UserEntity!
-  customer(id: String!): CustomerEntity!
+  getUsers: [UserEntity!]!
+  getStores: [StoreEntity!]!
+  getSuppliers: [SupplierEntity!]!
+  getCustomers: [CustomerEntity!]!
+  customer(userId: String!): CustomerEntity!
+  customerByUserId(userId: String!): CustomerEntity!
+}
+
+type StoreEntity {
+  id: ID!
+  name: String!
+  supplierId: String!
+  supplier: SupplierEntity!
+  themeId: String!
+}
+
+type SupplierEntity {
+  id: ID!
+  userId: String!
+  user: UserEntity!
+  stores: [String!]!
 }
 
 type UserEntity {
+  id: ID!
   firstName: String!
   lastName: String!
   email: String!

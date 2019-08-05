@@ -1,7 +1,8 @@
-import { Injectable, Request } from '@nestjs/common';
+import { Injectable, Request, HttpStatus } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { SupplierEntity } from './supplier.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CreateSupplierDto } from './models/create-supplier.dto';
 
 @Injectable()
 export class SupplierService {
@@ -9,12 +10,38 @@ export class SupplierService {
     @InjectRepository(SupplierEntity) private readonly supplierRepository: Repository<SupplierEntity>,
   ) {}
 
-  create(id: string) {
-    const newSupplier = new SupplierEntity(id);
-    return this.supplierRepository.save(newSupplier);
+  async create(newSupplier: CreateSupplierDto) {
+    const entity = Object.assign(new SupplierEntity(), newSupplier);
+    return this.supplierRepository.save(entity)
+    .catch(error => {
+      /* TODO: Handle creation error correctly */
+      if (!error || !error.err || !error.err.code) {
+        return HttpStatus.NOT_ACCEPTABLE;
+      }
+
+      switch (error.err.code) {
+        case 11000:
+          return HttpStatus.CONFLICT;
+
+        default:
+          return error.err;
+      }
+    });
   }
 
-  findOne(userId: string) {
-    return this.supplierRepository.findOne({ userId});
+  async findAll() {
+    return await this.supplierRepository.find();
+  }
+
+  async findOne(userId: string) {
+    return await this.supplierRepository.findOne({ userId});
+  }
+
+  async findById(id: string) {
+    return await this.supplierRepository.findOne({ id });
+  }
+
+  async findByUserId(userId: string) {
+    return await this.supplierRepository.findOne({ userId });
   }
 }

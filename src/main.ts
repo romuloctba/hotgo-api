@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { Transport } from '@nestjs/common/enums/transport.enum';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -10,6 +11,10 @@ async function bootstrap() {
     transport: Transport.TCP,
     options: { retryAttempts: 5, retryDelay: 3000 },
   });
+
+  app.useGlobalPipes(new ValidationPipe({
+    transform: true,
+  }));
 
   await app.startAllMicroservicesAsync();
 

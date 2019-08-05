@@ -1,16 +1,22 @@
-import { Customer } from './customer.interface';
-import { ObjectType, Field } from 'type-graphql';
+import { ObjectType, Field, ID } from 'type-graphql';
 import { Entity, Column, PrimaryGeneratedColumn, ObjectIdColumn } from 'typeorm';
-import { UserEntity } from '../user/models/user.entity';
+import { UserEntity } from '../../user/models/user.entity';
 
 @ObjectType()
 @Entity()
 export class CustomerEntity {
+
   @PrimaryGeneratedColumn()
   @ObjectIdColumn()
+  @Field(type => ID)
   id: string;
 
   @Column()
-  @Field(type => UserEntity)
+  @Field()
   userId: string;
+
+  @Column()
+  @Field(type => UserEntity)
+  user: UserEntity;
+
 }

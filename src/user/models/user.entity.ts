@@ -17,7 +17,7 @@ import { ApiModelProperty } from '@nestjs/swagger';
 import { User } from './user.interface';
 import { USER_STATUS } from '../user.constants';
 import { AffiliateEntity } from '../../affiliate/affiliate.entity';
-import { ObjectType, Field } from 'type-graphql';
+import { ObjectType, Field, ID } from 'type-graphql';
 
 declare enum STATUS_ENUM {
   ACTIVE,
@@ -32,21 +32,22 @@ export class UserEntity  {
 
   @PrimaryGeneratedColumn()
   @ObjectIdColumn()
+  @Field(type => ID)
   id: string;
 
-  @Field({ nullable: false })
   @Column({ nullable: false })
   @ApiModelProperty()
+  @Field({ nullable: false })
   firstName: string;
 
-  @Field({ nullable: false })
   @Column({ nullable: false })
   @ApiModelProperty()
+  @Field({ nullable: false })
   lastName: string;
 
-  @Field({ nullable: false })
   @Column({unique: true, nullable: false})
   @ApiModelProperty({uniqueItems: true, required: true})
+  @Field({ nullable: false })
   email: string;
 
   @Column()

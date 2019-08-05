@@ -2,19 +2,19 @@ import { Module } from '@nestjs/common';
 import { SupplierService } from './supplier.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SupplierEntity } from './supplier.entity';
-import { CreateStoreHandler } from '../store/handlers/create-store.handler';
 import { StoreModule } from '../store/store.module';
-export const CommandHandlers = [CreateStoreHandler];
+import { SupplierResolver } from './supplier.resolver';
+import { UserModule } from '../user/user.module';
 // export const EventHandlers =  [CreateStoreEvent, HeroFoundItemHandler];
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([SupplierEntity]),
-    StoreModule,
+    UserModule,
   ],
   providers: [
     SupplierService,
-    ...CommandHandlers,
+    SupplierResolver,
   ],
   exports: [SupplierService]
 })
