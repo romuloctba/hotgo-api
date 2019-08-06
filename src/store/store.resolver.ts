@@ -46,7 +46,6 @@ export class StoreResolver {
   async getProducts(@Parent() store): Promise<ProductEntity[]> {
     const { productIds } = store;
     const result = await this.productService.findByIds(productIds);
-    console.log('resolving productIds ', productIds, result);
     return result;
   }
 }
