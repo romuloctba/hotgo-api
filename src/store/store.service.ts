@@ -38,7 +38,18 @@ export class StoreService {
     return await this.storeRepository.findOne(id);
   }
 
-  findBySupplierId(id: string) {
-    return this.storeRepository.find({ supplierId: id });
+  async findBySupplierId(id: string) {
+    return await this.storeRepository.find({ supplierId: id });
+  }
+
+  async addProductsToStore(storeId: string, productIds: string[]): Promise<StoreEntity> {
+    const store = await this.storeRepository.findOne(storeId);
+    store.productIds = store.productIds || [];
+    productIds.forEach(id => {
+      if (!store.productIds.includes(id)) {
+        store.productIds.push(id);
+      }
+    });
+    return await this.storeRepository.save(store);
   }
 }

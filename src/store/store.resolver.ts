@@ -27,12 +27,13 @@ export class StoreResolver {
     return await this.storeService.findAll();
   }
 
-  // @Mutation(returns => StoreEntity)
-  // async addProducts(
-  //   @Args('store') store: CreateStoreDto,
-  // ) {
-  //   return await this.storeService.create(store);
-  // }
+  @Mutation(returns => StoreEntity)
+  async addProductsToStore(
+    @Args('storeId') storeId: string,
+    @Args({ name: 'productIds', type: () => [String]}) productIds: string[],
+  ) {
+    return await this.storeService.addProductsToStore(storeId, productIds);
+  }
 
   @ResolveProperty('supplier', () => SupplierEntity)
   async getSupplier(@Parent() store): Promise<SupplierEntity> {
@@ -41,10 +42,11 @@ export class StoreResolver {
     return result;
   }
 
-  @ResolveProperty('products', () => SupplierEntity)
+  @ResolveProperty('products', () => [ProductEntity])
   async getProducts(@Parent() store): Promise<ProductEntity[]> {
     const { productIds } = store;
     const result = await this.productService.findByIds(productIds);
+    console.log('resolving productIds ', productIds, result);
     return result;
   }
 }

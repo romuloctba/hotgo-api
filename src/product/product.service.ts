@@ -2,7 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductEntity } from './models/product.entity';
 import { CreateProductDto } from './models/create-product.dto';
-import { Repository } from 'typeorm';
+import { Repository, ObjectID } from 'typeorm';
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class ProductService {
@@ -25,7 +26,8 @@ export class ProductService {
   }
 
   async findByIds(ids: string[]) {
-    const result = await this.productRepository.findByIds(ids);
+    const objectIds = ids.map(id => new ObjectId(id));
+    const result = await this.productRepository.findByIds(objectIds);
     return result;
   }
 
