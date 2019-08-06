@@ -12,6 +12,7 @@ import {
   BeforeUpdate,
   OneToOne,
   RelationId,
+  Index,
 } from 'typeorm';
 import { ApiModelProperty } from '@nestjs/swagger';
 import { User } from './user.interface';
@@ -30,24 +31,24 @@ declare enum STATUS_ENUM {
 @ObjectType()
 export class UserEntity  {
 
-  @PrimaryGeneratedColumn()
   @ObjectIdColumn()
   @Field(type => ID)
   id: string;
 
   @Column({ nullable: false })
   @ApiModelProperty()
-  @Field({ nullable: false })
+  @Field()
   firstName: string;
 
   @Column({ nullable: false })
   @ApiModelProperty()
-  @Field({ nullable: false })
+  @Field()
   lastName: string;
 
   @Column({unique: true, nullable: false})
   @ApiModelProperty({uniqueItems: true, required: true})
   @Field({ nullable: false })
+  @Index({ unique: true })
   email: string;
 
   @Column()

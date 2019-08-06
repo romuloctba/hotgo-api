@@ -7,6 +7,14 @@ input CreateCustomerDto {
   userId: String!
 }
 
+input CreateProductDto {
+  supplierId: String!
+  name: String!
+  categories: [String!]!
+  tags: [String!]!
+  price: Float!
+}
+
 input CreateStoreDto {
   supplierId: String!
   name: String!
@@ -40,7 +48,21 @@ type Mutation {
   createUser(user: CreateUserDto!): UserEntity!
   createStore(store: CreateStoreDto!): StoreEntity!
   createSupplier(supplier: CreateSupplierDto!): SupplierEntity!
+  createProduct(product: CreateProductDto!): ProductEntity!
   createCustomer(customer: CreateCustomerDto!): CustomerEntity!
+}
+
+"""Price scalar type"""
+scalar Price
+
+type ProductEntity {
+  id: ID!
+  name: String!
+  categories: [String!]!
+  tags: [String!]!
+  supplierId: String!
+  supplier: SupplierEntity!
+  price: Price!
 }
 
 type Query {
@@ -48,6 +70,8 @@ type Query {
   getUsers: [UserEntity!]!
   getStores: [StoreEntity!]!
   getSuppliers: [SupplierEntity!]!
+  getProducts: [ProductEntity!]!
+  getProduct(id: String!): ProductEntity!
   getCustomers: [CustomerEntity!]!
   customer(userId: String!): CustomerEntity!
   customerByUserId(userId: String!): CustomerEntity!
@@ -59,6 +83,8 @@ type StoreEntity {
   supplierId: String!
   supplier: SupplierEntity!
   themeId: String!
+  productIds: [String!]!
+  products: SupplierEntity!
 }
 
 type SupplierEntity {

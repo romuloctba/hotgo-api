@@ -27,7 +27,7 @@ export class SupplierResolver {
   }
 
   @ResolveProperty('user')
-  async stores(@Parent() supplier) {
+  async user(@Parent() supplier) {
     const { userId } = supplier;
     return await this.userService.findById(userId);
   }

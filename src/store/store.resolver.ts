@@ -4,12 +4,15 @@ import { CreateStoreDto } from './models/create-store.dto';
 import { StoreService } from './store.service';
 import { SupplierService } from '../supplier/supplier.service';
 import { SupplierEntity } from '../supplier/supplier.entity';
+import { ProductEntity } from '../product/models/product.entity';
+import { ProductService } from '../product/product.service';
 
 @Resolver(of => StoreEntity)
 export class StoreResolver {
   constructor(
     private readonly storeService: StoreService,
     private readonly supplierService: SupplierService,
+    private readonly productService: ProductService,
   ) {}
 
   @Mutation(returns => StoreEntity)
@@ -24,11 +27,24 @@ export class StoreResolver {
     return await this.storeService.findAll();
   }
 
+  // @Mutation(returns => StoreEntity)
+  // async addProducts(
+  //   @Args('store') store: CreateStoreDto,
+  // ) {
+  //   return await this.storeService.create(store);
+  // }
+
   @ResolveProperty('supplier', () => SupplierEntity)
   async getSupplier(@Parent() store): Promise<SupplierEntity> {
     const { supplierId } = store;
-    const result = await this.supplierService.findByUserId(supplierId);
-    console.log('find by id the id ', supplierId, result);
+    const result = await this.supplierService.findOne(supplierId);
+    return result;
+  }
+
+  @ResolveProperty('products', () => SupplierEntity)
+  async getProducts(@Parent() store): Promise<ProductEntity[]> {
+    const { productIds } = store;
+    const result = await this.productService.findByIds(productIds);
     return result;
   }
 }

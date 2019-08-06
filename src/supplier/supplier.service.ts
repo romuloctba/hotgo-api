@@ -1,5 +1,6 @@
 import { Injectable, Request, HttpStatus } from '@nestjs/common';
 import { Repository } from 'typeorm';
+import { ObjectID } from 'mongodb';
 import { SupplierEntity } from './supplier.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateSupplierDto } from './models/create-supplier.dto';
@@ -33,12 +34,12 @@ export class SupplierService {
     return await this.supplierRepository.find();
   }
 
-  async findOne(userId: string) {
-    return await this.supplierRepository.findOne({ userId});
+  async findOne(id: string) {
+    return await this.supplierRepository.findOne(id);
   }
 
   async findById(id: string) {
-    return await this.supplierRepository.findOne({ id });
+    return await this.supplierRepository.findOne(id);
   }
 
   async findByUserId(userId: string) {

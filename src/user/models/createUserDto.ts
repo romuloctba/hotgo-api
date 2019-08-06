@@ -30,7 +30,6 @@ export class CreateUserDto {
   phone: string;
 
   @ApiModelProperty()
-  @IsEmail()
   @IsNotEmpty()
   @IsDefined()
   @IsString()

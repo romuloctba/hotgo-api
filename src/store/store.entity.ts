@@ -1,14 +1,14 @@
 import { Store } from './store.interface';
-import { Entity, PrimaryGeneratedColumn, Column, ObjectIdColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ObjectIdColumn, ObjectID } from 'typeorm';
 import { User } from '../user/models/user.interface';
 import { Theme } from './theme/theme.interface';
 import { ObjectType, ID, Field } from 'type-graphql';
 import { SupplierEntity } from '../supplier/supplier.entity';
+import { ProductEntity } from '../product/models/product.entity';
 
 @Entity()
 @ObjectType()
 export class StoreEntity {
-  @PrimaryGeneratedColumn()
   @ObjectIdColumn()
   @Field(type => ID)
   id: string;
@@ -31,4 +31,13 @@ export class StoreEntity {
 
   @Column()
   theme: Partial<Theme>;
+
+  @Column()
+  @Field(type => [String])
+  productIds: string[];
+
+  @Column()
+  @Field(type => [ProductEntity])
+  products: ProductEntity[];
+
 }

@@ -32,6 +32,6 @@ export class SupplierController {
     */
     // return this.supplierService.createStore();
 
-    return this.eventBus.publish(new CreateStoreCommand(supplier.id, req.body.name, '23'));
+    return this.eventBus.publish(new CreateStoreCommand(supplier.id.toString(), req.body.name, '23'));
   }
 }
