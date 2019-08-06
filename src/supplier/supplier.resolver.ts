@@ -5,6 +5,8 @@ import { StoreService } from '../store/store.service';
 import { StoreEntity } from '../store/store.entity';
 import { CreateSupplierDto } from './models/create-supplier.dto';
 import { UserService } from '../user/user.service';
+import { UseGuards } from '@nestjs/common';
+import { GqlAuthGuard } from '../auth/guards/gql-auth.guard';
 
 
 @Resolver(of => SupplierEntity)
@@ -20,6 +22,7 @@ export class SupplierResolver {
   }
 
   @Mutation(returns => SupplierEntity)
+  @UseGuards(GqlAuthGuard)
   async createSupplier(
     @Args('supplier') supplier: CreateSupplierDto,
   ) {

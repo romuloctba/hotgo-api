@@ -3,6 +3,28 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+type AffiliateEntity {
+  id: ID!
+  userId: String!
+  storeIds: [String!]!
+  status: String!
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+  revision: Float!
+}
+
+type ComissionEntity {
+  id: ID!
+  amount: Float!
+  productId: String!
+  product: ProductEntity!
+  affiliateId: String!
+  affiliate: AffiliateEntity!
+  supplierId: String!
+  supplier: SupplierEntity!
+  status: Int!
+}
+
 input CreateCustomerDto {
   userId: String!
 }
@@ -44,12 +66,19 @@ The javascript `Date` as string. Type represents date and time as the ISO Date s
 """
 scalar DateTime
 
+input LoginDto {
+  username: String!
+  password: String!
+}
+
 type Mutation {
   createUser(user: CreateUserDto!): UserEntity!
   createStore(store: CreateStoreDto!): StoreEntity!
+  addProductsToStore(productIds: [String!]!, storeId: String!): StoreEntity!
   createSupplier(supplier: CreateSupplierDto!): SupplierEntity!
   createProduct(product: CreateProductDto!): ProductEntity!
   createCustomer(customer: CreateCustomerDto!): CustomerEntity!
+  login(loginDto: LoginDto!): SuccessJwtLoginResponse!
 }
 
 """Price scalar type"""
@@ -63,6 +92,7 @@ type ProductEntity {
   supplierId: String!
   supplier: SupplierEntity!
   price: Price!
+  availableComissionIds: [String!]!
 }
 
 type Query {
@@ -84,7 +114,11 @@ type StoreEntity {
   supplier: SupplierEntity!
   themeId: String!
   productIds: [String!]!
-  products: SupplierEntity!
+  products: [ProductEntity!]!
+}
+
+type SuccessJwtLoginResponse {
+  access_token: String!
 }
 
 type SupplierEntity {
