@@ -109,6 +109,26 @@ type Mutation {
   login(loginDto: LoginDto!): SuccessJwtLoginResponse!
 }
 
+type OrderEntity {
+  id: ID!
+  productIds: [String!]!
+  products: [ProductEntity!]!
+  comissionIds: [String!]!
+  comission: [ComissionEntity!]!
+  customerId: String!
+  customer: [CustomerEntity!]!
+  supplierId: String!
+  supplier: SupplierEntity!
+  paymentId: String!
+  payment: PaymentEntity!
+}
+
+type PaymentEntity {
+  id: ID!
+  orderId: String!
+  customer: [OrderEntity!]!
+}
+
 """Price scalar type"""
 scalar Price
 

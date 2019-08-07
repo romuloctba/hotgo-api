@@ -13,6 +13,7 @@ import { OrderModule } from './order/order.module';
 import { ComissionModule } from './comission/comission.module';
 import { AuthModule } from './auth/auth.module';
 import { GraphQLModule } from '@nestjs/graphql';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { GraphQLModule } from '@nestjs/graphql';
     OrderModule,
     ComissionModule,
     AuthModule,
+    PaymentModule,
   ],
   controllers: [
     AppController,
