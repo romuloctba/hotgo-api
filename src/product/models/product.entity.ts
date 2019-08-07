@@ -5,10 +5,11 @@ import {
   Column,
   ObjectID,
 } from 'typeorm';
-import { Supplier } from 'src/supplier/supplier.interface';
+import { Supplier } from '../../supplier/supplier.interface';
 import { ObjectType, ID, Field, Float } from 'type-graphql';
 import { SupplierEntity } from '../../supplier/supplier.entity';
 import Price from './price.class';
+import ComissionTypeEntity from '../../comission/models/comission-type.entity';
 
 @ObjectType()
 @Entity()
@@ -41,4 +42,11 @@ export class ProductEntity {
   @Column()
   @Field(type => Price)
   price: Price;
+
+  @Column({ nullable: true })
+  @Field(type => [String], { nullable: true })
+  comissionTypeIds: string[];
+
+  @Field(type => [ComissionTypeEntity], { nullable: true })
+  comissionType: ComissionTypeEntity[];
 }

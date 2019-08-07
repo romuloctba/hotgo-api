@@ -4,12 +4,15 @@ import { ProductService } from './product.service';
 import { CreateProductDto } from './models/create-product.dto';
 import { SupplierService } from '../supplier/supplier.service';
 import { SupplierEntity } from '../supplier/supplier.entity';
+import { ComissionService } from '../comission/comission.service';
+import ComissionTypeEntity from '../comission/models/comission-type.entity';
 
 @Resolver(of => ProductEntity)
 export class ProductResolver {
   constructor(
     private readonly productService: ProductService,
     private readonly supplierService: SupplierService,
+    private readonly comissionService: ComissionService,
   ) {}
 
   @Query(returns => [ProductEntity])
@@ -30,8 +33,14 @@ export class ProductResolver {
   }
 
   @ResolveProperty('supplier', () => SupplierEntity)
-  async stores(@Parent() product) {
+  async supplier(@Parent() product) {
     const { supplierId } = product;
     return await this.supplierService.findById(supplierId);
+  }
+
+  @ResolveProperty('comissionType', () => ComissionTypeEntity)
+  async comissionType(@Parent() product) {
+    const { comissionTypeIds } = product;
+    return await this.comissionService.getTypeByIds(comissionTypeIds);
   }
 }

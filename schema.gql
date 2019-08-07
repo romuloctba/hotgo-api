@@ -3,6 +3,21 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+input AddComissionDto {
+  typeId: String!
+  productId: String!
+  affiliateId: String!
+  supplierId: String!
+  status: Float!
+}
+
+input AddComissionTypeDto {
+  title: String!
+  amount: Float!
+  productId: String!
+  status: Float!
+}
+
 type AffiliateEntity {
   id: ID!
   userId: String!
@@ -15,7 +30,8 @@ type AffiliateEntity {
 
 type ComissionEntity {
   id: ID!
-  amount: Float!
+  typeId: String!
+  type: ComissionTypeEntity!
   productId: String!
   product: ProductEntity!
   affiliateId: String!
@@ -23,6 +39,16 @@ type ComissionEntity {
   supplierId: String!
   supplier: SupplierEntity!
   status: Int!
+}
+
+type ComissionTypeEntity {
+  id: ID!
+  amount: Float!
+  title: String
+  productId: String!
+  status: Int!
+  createdAt: DateTime!
+  modifiedAt: DateTime!
 }
 
 input CreateCustomerDto {
@@ -77,6 +103,8 @@ type Mutation {
   addProductsToStore(productIds: [String!]!, storeId: String!): StoreEntity!
   createSupplier(supplier: CreateSupplierDto!): SupplierEntity!
   createProduct(product: CreateProductDto!): ProductEntity!
+  addComission(comission: AddComissionDto!): ComissionEntity!
+  addComissionType(comissionType: AddComissionTypeDto!): ComissionTypeEntity!
   createCustomer(customer: CreateCustomerDto!): CustomerEntity!
   login(loginDto: LoginDto!): SuccessJwtLoginResponse!
 }
@@ -92,7 +120,8 @@ type ProductEntity {
   supplierId: String!
   supplier: SupplierEntity!
   price: Price!
-  availableComissionIds: [String!]!
+  comissionTypeIds: [String!]
+  comissionType: [ComissionTypeEntity!]
 }
 
 type Query {
@@ -102,6 +131,9 @@ type Query {
   getSuppliers: [SupplierEntity!]!
   getProducts: [ProductEntity!]!
   getProduct(id: String!): ProductEntity!
+  getComissionByProduct(productId: String!): [ComissionEntity!]!
+  getComissionByAffiliate(affiliateId: String!): [ComissionEntity!]!
+  getComissionTypeByProduct(productId: String!): [ComissionTypeEntity!]!
   getCustomers: [CustomerEntity!]!
   customer(userId: String!): CustomerEntity!
   customerByUserId(userId: String!): CustomerEntity!
