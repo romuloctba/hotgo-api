@@ -3,6 +3,7 @@ import { CustomerEntity } from './models/customer.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateCustomerDto } from './models/create-customer.dto';
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class CustomerService {
@@ -33,8 +34,8 @@ export class CustomerService {
     return this.customerRepository.find();
   }
 
-  findById(id: string) {
-    return this.customerRepository.find({ id });
+  async findById(id: string) {
+    return await this.customerRepository.findOne(id);
   }
 
   findByUserId(userId: string) {

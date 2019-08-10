@@ -1,10 +1,13 @@
-import { Entity, Column, ObjectIdColumn } from 'typeorm';
+import { Entity, Column, ObjectIdColumn, CreateDateColumn, UpdateDateColumn, VersionColumn } from 'typeorm';
 import { ProductEntity } from '../../product/models/product.entity';
 import { CustomerEntity } from '../../customer/models/customer.entity';
 import { ObjectType, Field, ID, Float } from 'type-graphql';
 import { SupplierEntity } from '../../supplier/supplier.entity';
 import { ComissionEntity } from '../../comission/models/comission.entity';
-import { PaymentEntity } from '../../payment/models/payment-entity';
+import { PaymentEntity } from '../../payment/models/payment.entity';
+import { ValidateNested } from 'class-validator';
+import { ApiModelProperty } from '@nestjs/swagger';
+import { GraphQLJSON, GraphQLJSONObject } from 'graphql-type-json';
 
 @Entity()
 @ObjectType()
@@ -14,27 +17,44 @@ export class OrderEntity {
   id: string;
 
   @Column()
+  @ValidateNested({ each: true })
   @Field(type => [String])
-  productIds: [string];
-  @Field(type => [ProductEntity]) products: [ProductEntity];
+  @ApiModelProperty()
+  productIds: string[];
+  @Field(type => [ProductEntity]) products: ProductEntity[];
+  @Column(type => GraphQLJSON)
+  @Field(type => GraphQLJSON)
+  @ApiModelProperty()
+  productsSnapshot: GraphQLJSON;
 
   @Column()
-  @Field(type => [String])
-  comissionIds: [string];
-  @Field(type => [ComissionEntity]) comission: [ComissionEntity];
+  @ValidateNested({ each: true })
+  @Field(type => [String], { nullable: true})
+  @ApiModelProperty()
+  comissionIds?: string[];
+  @Field(type => [ComissionEntity], { nullable: true}) comissions?: ComissionEntity[];
 
   @Column()
   @Field(type => String)
+  @ApiModelProperty()
   customerId: string;
-  @Field(type => [CustomerEntity]) customer: CustomerEntity;
+  @Field(type => CustomerEntity) customer: CustomerEntity;
 
   @Column()
-  @Field(type => String)
-  supplierId: string;
-  @Field(type => SupplierEntity) supplier: SupplierEntity;
+  @Field(type => String, { nullable: true })
+  @ApiModelProperty()
+  paymentId?: string;
+  @Field(type => PaymentEntity, { nullable: true }) payment?: PaymentEntity;
 
-  @Column()
-  @Field(type => String)
-  paymentId: string;
-  @Field(type => PaymentEntity) payment: PaymentEntity;
+  @CreateDateColumn()
+  @Field({ nullable: false })
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  @Field({ nullable: false })
+  modifiedAt: Date;
+
+  @VersionColumn()
+  revision: number;
+
 }

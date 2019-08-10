@@ -18,6 +18,11 @@ input AddComissionTypeDto {
   status: Float!
 }
 
+input AddProductToStoreDto {
+  storeId: String!
+  productIds: [String!]!
+}
+
 type AffiliateEntity {
   id: ID!
   userId: String!
@@ -53,6 +58,13 @@ type ComissionTypeEntity {
 
 input CreateCustomerDto {
   userId: String!
+}
+
+input CreateOrderDto {
+  productIds: [String!]!
+  comissionIds: [String!]
+  customerId: String!
+  paymentId: String
 }
 
 input CreateProductDto {
@@ -92,6 +104,11 @@ The javascript `Date` as string. Type represents date and time as the ISO Date s
 """
 scalar DateTime
 
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
 input LoginDto {
   username: String!
   password: String!
@@ -100,12 +117,13 @@ input LoginDto {
 type Mutation {
   createUser(user: CreateUserDto!): UserEntity!
   createStore(store: CreateStoreDto!): StoreEntity!
-  addProductsToStore(productIds: [String!]!, storeId: String!): StoreEntity!
+  addProductsToStore(data: AddProductToStoreDto!): StoreEntity!
   createSupplier(supplier: CreateSupplierDto!): SupplierEntity!
   createProduct(product: CreateProductDto!): ProductEntity!
   addComission(comission: AddComissionDto!): ComissionEntity!
   addComissionType(comissionType: AddComissionTypeDto!): ComissionTypeEntity!
   createCustomer(customer: CreateCustomerDto!): CustomerEntity!
+  createOrder(newOrder: CreateOrderDto!): OrderEntity!
   login(loginDto: LoginDto!): SuccessJwtLoginResponse!
 }
 
@@ -113,20 +131,25 @@ type OrderEntity {
   id: ID!
   productIds: [String!]!
   products: [ProductEntity!]!
-  comissionIds: [String!]!
-  comission: [ComissionEntity!]!
+  productsSnapshot: JSON!
+  comissionIds: [String!]
+  comissions: [ComissionEntity!]
   customerId: String!
-  customer: [CustomerEntity!]!
-  supplierId: String!
-  supplier: SupplierEntity!
-  paymentId: String!
-  payment: PaymentEntity!
+  customer: CustomerEntity!
+  paymentId: String
+  payment: PaymentEntity
+  createdAt: DateTime!
+  modifiedAt: DateTime!
 }
 
 type PaymentEntity {
   id: ID!
   orderId: String!
-  customer: [OrderEntity!]!
+  amount: Float!
+  method: String!
+  log: String!
+  status: String!
+  logs: [JSON!]!
 }
 
 """Price scalar type"""
@@ -157,6 +180,8 @@ type Query {
   getCustomers: [CustomerEntity!]!
   customer(userId: String!): CustomerEntity!
   customerByUserId(userId: String!): CustomerEntity!
+  getOrders: [OrderEntity!]!
+  getOrder(id: String!): OrderEntity!
 }
 
 type StoreEntity {

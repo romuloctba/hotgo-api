@@ -6,6 +6,7 @@ import { SupplierService } from '../supplier/supplier.service';
 import { SupplierEntity } from '../supplier/supplier.entity';
 import { ProductEntity } from '../product/models/product.entity';
 import { ProductService } from '../product/product.service';
+import { AddProductToStoreDto } from './models/add-product-store.dto';
 
 @Resolver(of => StoreEntity)
 export class StoreResolver {
@@ -29,10 +30,9 @@ export class StoreResolver {
 
   @Mutation(returns => StoreEntity)
   async addProductsToStore(
-    @Args('storeId') storeId: string,
-    @Args({ name: 'productIds', type: () => [String]}) productIds: string[],
+    @Args('data') data: AddProductToStoreDto,
   ) {
-    return await this.storeService.addProductsToStore(storeId, productIds);
+    return await this.storeService.addProductsToStore(data.storeId, data.productIds);
   }
 
   @ResolveProperty('supplier', () => SupplierEntity)

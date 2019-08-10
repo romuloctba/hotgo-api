@@ -31,4 +31,7 @@ export class ProductService {
     return result;
   }
 
+  async findBySupplier(supplierId: string) {
+    return await this.productRepository.find({ supplierId });
+  }
 }

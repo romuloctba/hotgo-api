@@ -1,4 +1,4 @@
-import { PaymentEntity } from './payment-entity';
+import { PaymentEntity } from './payment.entity';
 
 describe('PaymentEntity', () => {
   it('should be defined', () => {

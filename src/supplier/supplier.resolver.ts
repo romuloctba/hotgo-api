@@ -22,7 +22,7 @@ export class SupplierResolver {
   }
 
   @Mutation(returns => SupplierEntity)
-  @UseGuards(GqlAuthGuard)
+  // @UseGuards(GqlAuthGuard)
   async createSupplier(
     @Args('supplier') supplier: CreateSupplierDto,
   ) {
