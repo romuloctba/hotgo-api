@@ -43,7 +43,7 @@ export class OrderEntity {
   @Column()
   @Field(type => String, { nullable: true })
   @ApiModelProperty()
-  paymentId?: string;
+  paymentId?: string; // payment.findByOrderId( ) returns [PaymentEntity]
   @Field(type => PaymentEntity, { nullable: true }) payment?: PaymentEntity;
 
   @CreateDateColumn()

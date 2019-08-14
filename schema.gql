@@ -23,6 +23,19 @@ input AddProductToStoreDto {
   productIds: [String!]!
 }
 
+type AddressEntity {
+  id: ID!
+  userId: String!
+  street: String!
+  number: String!
+  complement: String!
+  district: String!
+  city: String!
+  state: String!
+  country: String!
+  postalCode: String!
+}
+
 type AffiliateEntity {
   id: ID!
   userId: String!
@@ -56,8 +69,24 @@ type ComissionTypeEntity {
   modifiedAt: DateTime!
 }
 
+input CreateAddressDto {
+  userId: String!
+  street: String!
+  number: String!
+  complement: String!
+  district: String!
+  city: String!
+  state: String!
+  country: String!
+  postalCode: String!
+}
+
 input CreateCustomerDto {
   userId: String!
+  firstName: String!
+  lastName: String!
+  documentType: String!
+  documentNumber: String!
 }
 
 input CreateOrderDto {
@@ -65,6 +94,16 @@ input CreateOrderDto {
   comissionIds: [String!]
   customerId: String!
   paymentId: String
+}
+
+input CreatePaymentDto {
+  orderId: String!
+  addressId: String!
+  amount: Float!
+  method: String!
+  log: String!
+  status: String!
+  logs: [String!]!
 }
 
 input CreateProductDto {
@@ -97,6 +136,10 @@ type CustomerEntity {
   id: ID!
   userId: String!
   user: UserEntity!
+  firstName: String!
+  lastName: String!
+  documentType: String!
+  documentNumber: String!
 }
 
 """
@@ -124,7 +167,9 @@ type Mutation {
   addComissionType(comissionType: AddComissionTypeDto!): ComissionTypeEntity!
   createCustomer(customer: CreateCustomerDto!): CustomerEntity!
   createOrder(newOrder: CreateOrderDto!): OrderEntity!
+  payOrder(payOrderDto: PayOrderDto!): OrderEntity!
   login(loginDto: LoginDto!): SuccessJwtLoginResponse!
+  createAddress(newAddress: CreateAddressDto!): AddressEntity!
 }
 
 type OrderEntity {
@@ -152,6 +197,11 @@ type PaymentEntity {
   logs: [JSON!]!
 }
 
+input PayOrderDto {
+  orderId: String!
+  payment: CreatePaymentDto!
+}
+
 """Price scalar type"""
 scalar Price
 
@@ -171,6 +221,7 @@ type Query {
   user(id: String!): UserEntity!
   getUsers: [UserEntity!]!
   getStores: [StoreEntity!]!
+  getStore(id: String!): StoreEntity!
   getSuppliers: [SupplierEntity!]!
   getProducts: [ProductEntity!]!
   getProduct(id: String!): ProductEntity!
@@ -182,6 +233,7 @@ type Query {
   customerByUserId(userId: String!): CustomerEntity!
   getOrders: [OrderEntity!]!
   getOrder(id: String!): OrderEntity!
+  getAdressByUserId(userId: String!): AddressEntity!
 }
 
 type StoreEntity {
@@ -207,8 +259,6 @@ type SupplierEntity {
 
 type UserEntity {
   id: ID!
-  firstName: String!
-  lastName: String!
   email: String!
   status: Float!
   createdAt: DateTime!

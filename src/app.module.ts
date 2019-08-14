@@ -21,6 +21,7 @@ import { StoreIdValidatorPipe } from './shared/validators/store-id-validator.pip
 import { CustomerIdValidatorPipe } from './shared/validators/customer-id-validator.pipe';
 import { ProductIdValidatorPipe } from './shared/validators/product-id-validator.pipe';
 import { PaymentIdValidatorPipe } from './shared/validators/payment-id-validator.pipe';
+import { AddressModule } from './address/address.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { PaymentIdValidatorPipe } from './shared/validators/payment-id-validator
     ComissionModule,
     AuthModule,
     PaymentModule,
+    AddressModule,
   ],
   controllers: [
     AppController,

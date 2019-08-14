@@ -28,6 +28,11 @@ export class StoreResolver {
     return await this.storeService.findAll();
   }
 
+  @Query(returns => StoreEntity)
+  async getStore(@Args('id') id: string) {
+    return await this.storeService.findById(id);
+  }
+
   @Mutation(returns => StoreEntity)
   async addProductsToStore(
     @Args('data') data: AddProductToStoreDto,

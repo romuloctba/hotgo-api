@@ -8,7 +8,7 @@ import { CustomerEntity } from '../customer/models/customer.entity';
 import { CustomerService } from '../customer/customer.service';
 import { PaymentEntity } from '../payment/models/payment.entity';
 import { PaymentService } from '../payment/payment.service';
-import { ReturnStatement } from 'ts-morph';
+import { PayOrderDto } from './models/pay-order.dto';
 
 @Resolver(of => OrderEntity)
 export class OrderResolver {
@@ -33,6 +33,12 @@ export class OrderResolver {
   @Query(returns => OrderEntity)
   async getOrder(@Args('id') id: string) {
     return await this.orderService.findById(id);
+  }
+
+  @Mutation(returns => OrderEntity)
+  async payOrder(@Args('payOrderDto') payOrderDto: PayOrderDto) {
+    const payment = await this.paymentService.create(payOrderDto.payment);
+    return await this.paymentService.findById(payOrderDto.orderId);
   }
 
   @ResolveProperty(type => ProductEntity)

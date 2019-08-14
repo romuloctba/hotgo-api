@@ -26,6 +26,9 @@ export class ProductService {
   }
 
   async findByIds(ids: string[]) {
+    if (!ids) {
+      return [];
+    }
     const objectIds = ids.map(id => new ObjectId(id));
     const result = await this.productRepository.findByIds(objectIds);
     return result;

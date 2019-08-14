@@ -35,16 +35,6 @@ export class UserEntity  {
   @Field(type => ID)
   id: string;
 
-  @Column({ nullable: false })
-  @ApiModelProperty()
-  @Field()
-  firstName: string;
-
-  @Column({ nullable: false })
-  @ApiModelProperty()
-  @Field()
-  lastName: string;
-
   @Column({unique: true, nullable: false})
   @ApiModelProperty({uniqueItems: true, required: true})
   @Field({ nullable: false })
